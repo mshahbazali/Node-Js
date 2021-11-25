@@ -30,6 +30,7 @@ var upload = multer({
         }
     }
 });
+
 router.post("/", upload.single('profileImg'), async (req, res) => {
     try {
         const securePass = await bcrypt.hash(req.body.password, 10)

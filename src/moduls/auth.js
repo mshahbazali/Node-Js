@@ -33,7 +33,12 @@ const authSchema = new mongoose.Schema({
     profileImg: {
         type: String,
         unique: false,
+    },
+    product: {
+        type: Object,
+        unique: false,
     }
+
 })
 
 const auth = new mongoose.model("auth", authSchema)
