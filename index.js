@@ -2,10 +2,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require("express");
 require('./src/db/connect')
-const accountSid = 'AC6a2f45fbb7b4d63a6ded3bcdc57aa1ed'; // Your Account SID from www.twilio.com/console
-const authToken = 'e0ef986bc2db9bcb77f08d51049f9a0d'; // Your Auth Token from www.twilio.com/console
+// const accountSid = 'AC6a2f45fbb7b4d63a6ded3bcdc57aa1ed'; // Your Account SID from www.twilio.com/console
+// const authToken = 'e0ef986bc2db9bcb77f08d51049f9a0d'; // Your Auth Token from www.twilio.com/console
 
-const client = require('twilio')(accountSid, authToken);
+// const client = require('twilio')(accountSid, authToken);
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -38,16 +38,16 @@ app.use('/public', express.static('public'));
 //     });
 // });
 app.get("/", (req, res) => {
-    client.messages
-        .create({
-            body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-            from: '+923424652710',
-            to: '+923172988830'
-        })
-        .then(message => console.log(message.sid))
-        .catch((err) => {
-            console.log(err)
-        })
+    // client.messages
+    //     .create({
+    //         body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+    //         from: '+923424652710',
+    //         to: '+923172988830'
+    //     })
+    //     .then(message => console.log(message.sid))
+    //     .catch((err) => {
+    //         console.log(err)
+    //     })
     res.send("hello world");
 })
 app.listen(port, () => {
