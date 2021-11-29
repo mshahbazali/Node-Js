@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require("express");
 require('./src/db/connect')
+
 // const accountSid = 'AC6a2f45fbb7b4d63a6ded3bcdc57aa1ed'; // Your Account SID from www.twilio.com/console
 // const authToken = 'e0ef986bc2db9bcb77f08d51049f9a0d'; // Your Auth Token from www.twilio.com/console
 
