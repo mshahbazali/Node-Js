@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const dbConnectLocal = "mongodb://localhost:27017/users";
-const dbConnectAtlas = "mongodb+srv://shahbazali:shahbazali672@cluster0.crgsy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-mongoose.connect(dbConnectAtlas).then(() => {
+const dbConnectAtlas = "mongodb+srv://istable:istable123@istable.y4geq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+mongoose.connect(process.env.mongodb_url).then(() => {
     console.log("connected");
 })
     .catch((e) => {
