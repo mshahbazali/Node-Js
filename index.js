@@ -9,7 +9,7 @@ require('./src/db/connect')
 // const client = require('twilio')(accountSid, authToken);
 
 const app = express()
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 8000
 app.use(express.json())
 app.use(bodyParser.json({ limit: '30mb', extended: false }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: false }))
@@ -19,6 +19,7 @@ app.use("/api/user", require("./src/routes/user"))
 app.use("/api/auth/register", require("./src/routes/register"))
 app.use("/api/auth/login", require("./src/routes/login"))
 app.use("/api/auth/user", require("./src/routes/users"))
+app.use("/api/auth/updateprofile", require("./src/routes/updateProfile"))
 
 // Forget Password 
 

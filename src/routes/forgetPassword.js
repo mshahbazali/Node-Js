@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router();
-const auth = require('../moduls/auth')
+const { authSchema } = require('../moduls/auth')
 const bcrypt = require('bcrypt')
 const nodemailer = require("nodemailer");
 const hbs = require('nodemailer-express-handlebars')
@@ -49,7 +49,7 @@ async function main(email, otp) {
 router.post("/forget-password", async (req, res) => {
     try {
         const email = req.body.email
-        auth.find({ email: email })
+        authSchema.find({ email: email })
             .exec()
             .then(async (user) => {
                 if (user.length < 1) {
@@ -62,18 +62,17 @@ router.post("/forget-password", async (req, res) => {
                     const otp = Math.floor(Math.random() * 972) * 634;
                     await main(user[0].email, otp).catch("error").then(async () => {
                         req.body.otp = otp;
-                        const updateauth = await auth.findByIdAndUpdate(_id, req.body, {
+                        const updateauth = await authSchema.findByIdAndUpdate(_id, req.body, {
                             new: true
                         })
                         setTimeout(async () => {
                             req.body.otp = null;
-                            const updateauth = await auth.findByIdAndUpdate(_id, req.body, {
+                            const updateauth = await authSchema.findByIdAndUpdate(_id, req.body, {
                                 new: true
                             })
                             console.log("OK")
+                            res.status(202).send(updateauth)
                         }, 120000);
-                        console.log(req.body.otp)
-                        res.status(202).send(updateauth)
                     })
                         .catch((e) => {
                             console.log(e)
@@ -93,7 +92,7 @@ router.post("/forget-password", async (req, res) => {
 router.post("/reset-password", async (req, res) => {
     try {
         const userOtp = req.body.otp
-        auth.find({ otp: userOtp })
+        authSchema.find({ otp: userOtp })
             .exec()
             .then(async (user) => {
                 if (user.length < 1) {
@@ -109,7 +108,7 @@ router.post("/reset-password", async (req, res) => {
                         const _id = user[0]._id.toString();
                         const securePass = await bcrypt.hash(req.body.password, 10);
                         req.body.password = securePass
-                        const updateauth = await auth.findByIdAndUpdate(_id, req.body, {
+                        const updateauth = await authSchema.findByIdAndUpdate(_id, req.body, {
                             new: true
                         })
                         // res.status(201).send(updateauth)
@@ -135,7 +134,7 @@ router.post("/reset-password", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        const recivedData = await auth.find();
+        const recivedData = await authSchema.find();
         res.status(202).send(recivedData)
     }
     catch (e) {
@@ -148,7 +147,7 @@ router.get("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
     try {
         const _id = req.params.id
-        const updateauth = await auth.findByIdAndUpdate(_id, req.body, {
+        const updateauth = await authSchema.findByIdAndUpdate(_id, req.body, {
             new: true
         })
         res.status(202).send(updateauth)
@@ -163,7 +162,7 @@ router.patch("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         const _id = req.params.id
-        const updateauth = await auth.findByIdAndDelete(_id)
+        const updateauth = await authSchema.findByIdAndDelete(_id)
         res.status(202).send(updateauth)
     }
     catch (e) {

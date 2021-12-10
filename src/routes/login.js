@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router();
-const auth = require('../moduls/auth')
+const { authSchema } = require('../moduls/auth')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -9,13 +9,11 @@ const jwt = require('jsonwebtoken')
 router.post("/", async (req, res) => {
     try {
         const email = req.body.email
-        auth.find({ email: email })
+        authSchema.find({ email: email })
             .exec()
             .then(async (user) => {
                 if (user.length < 1) {
-                    res.status(404).send({
-                        massage: "User Not Found"
-                    })
+                    res.status(202).send("User Not Found")
                 }
                 else {
                     await bcrypt.compare(req.body.password, user[0].password)
@@ -25,18 +23,14 @@ router.post("/", async (req, res) => {
                             user: user
                         })
                     });
-
-
                 }
             })
             .catch(e => {
-                res.status(404).send({
-                    massage: "User Not Found"
-                })
+                res.status(202).send("User Not Found")
             })
     }
     catch (e) {
-        res.status(400).send(e)
+        res.status(202).send("User Not")
     }
 })
 

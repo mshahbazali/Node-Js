@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router();
-const auth = require('../moduls/auth')
+const { authSchema, validate } = require('../moduls/auth')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const multer = require('multer');
@@ -31,31 +31,63 @@ var upload = multer({
     }
 });
 
-router.post("/", upload.single('profileImg'), async (req, res) => {
+router.post("/", async (req, res) => {
     try {
-        const securePass = await bcrypt.hash(req.body.password, 10)
-        const url = req.protocol + '://' + req.get('host')
-        const token = jwt.sign({ email: req.body.email }, req.body.email, { expiresIn: "10h" })
-        req.body.token = token
-        req.body.password = securePass
-        req.body.country = { a: '' }
-        req.body.profileImg = url + '/public/' + req.file.filename
-        const addauth = new auth(req.body)
-        addauth.save()
-        res.status(201).send(req.body)
+        const { error } = validate(req.body)
+        if (error) {
+            return res.status(400).send(error);
+        }
+        let user = await authSchema.findOne({ email: req.body.email });
+        if (user) {
+            return res.status(202).send('That user already exisits!');
+        } else {
+            const securePass = await bcrypt.hash(req.body.password, 10)
+            const token = jwt.sign({ email: req.body.email }, req.body.email, { expiresIn: "10h" })
+            req.body.token = token
+            req.body.password = securePass
+            const addauth = new authSchema(req.body)
+            addauth.save()
+            res.status(201).send("Your account was created successfully!")
+        }
+
     }
     catch (err) {
         console.log(err)
     }
-    // console.log(securePass)
 })
+// router.post("/", upload.single('profileImg'), async (req, res) => {
+//     try {
+//         const securePass = await bcrypt.hash(req.body.password, 10)
+//         const url = req.protocol + '://' + req.get('host')
+//         const token = jwt.sign({ email: req.body.email }, req.body.email, { expiresIn: "10h" })
+//         req.body.token = token
+//         req.body.password = securePass
+//         req.body.country = { a: '' }
+//         req.body.profileImg = url + '/public/' + req.file.filename
+//         const addauth = new auth(req.body)
+//         addauth.save()
+//         res.status(201).send(req.body)
+//     }
+//     catch (err) {
+//         console.log(err)
+//     }
+//     // console.log(securePass)
+// })
 // Data Read 
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
-        const recivedData = await auth.find();
+        const _id = req.params.id
+        authSchema.findOne({ _id: _id }, async (err, user) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.status(201).send(user)
 
-        res.status(202).send(recivedData)
+            }
+        }
+        )
     }
     catch (e) {
         res.status(204).send(e)
@@ -66,6 +98,7 @@ router.get("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
     try {
+
         const _id = req.params.id
         const updateauth = await auth.findByIdAndUpdate(_id, req.body, {
             new: true
