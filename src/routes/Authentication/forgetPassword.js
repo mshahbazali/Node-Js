@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router();
-const { authSchema } = require('../moduls/auth')
+const { authSchema } = require('../../moduls/auth')
 const bcrypt = require('bcrypt')
 const nodemailer = require("nodemailer");
 const hbs = require('nodemailer-express-handlebars')

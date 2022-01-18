@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router();
-const { authSchema } = require('../moduls/auth')
+const { authSchema } = require('../../moduls/auth')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -19,18 +19,18 @@ router.post("/", async (req, res) => {
                     await bcrypt.compare(req.body.password, user[0].password)
                     jwt.verify(user[0].token, user[0].email, function (err, decoded) {
                         res.status(201).send({
-                            massage: "User Found",
+                            message: "User Found",
                             user: user
                         })
                     });
                 }
             })
             .catch(e => {
-                res.status(202).send("User Not Found")
+                res.status(201).send({ message: "User Not Found", user: 'false' })
             })
     }
     catch (e) {
-        res.status(202).send("User Not")
+        res.status(201).send({ message: "User Not Found", user: 'false' })
     }
 })
 

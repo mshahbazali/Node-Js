@@ -20,7 +20,7 @@ const authSchema = mongoose.model("auth", mongoose.Schema({
     city: { type: String },
     country: { type: String },
     profileImg: { type: String },
-    user: { type: String },
+    verify: { type: String },
     token: {
         type: String,
         unique: false,

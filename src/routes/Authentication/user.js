@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router();
-const users = require('../moduls/users')
+const users = require('../../moduls/users')
 // Data Create 
 
 // router.post('/', secured(),async function(req, res) {

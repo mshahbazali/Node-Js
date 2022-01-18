@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router();
-const { authSchema, validate } = require('../moduls/auth')
+const { authSchema, validate } = require('../../moduls/auth')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const multer = require('multer');
@@ -84,7 +84,6 @@ router.get("/:id", async (req, res) => {
             }
             else {
                 res.status(201).send(user)
-
             }
         }
         )

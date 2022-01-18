@@ -15,15 +15,16 @@ app.use(bodyParser.json({ limit: '30mb', extended: false }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: false }))
 app.use(cors());
 
-app.use("/api/user", require("./src/routes/user"))
-app.use("/api/auth/register", require("./src/routes/register"))
-app.use("/api/auth/login", require("./src/routes/login"))
-app.use("/api/auth/user", require("./src/routes/users"))
-app.use("/api/auth/updateprofile", require("./src/routes/updateProfile"))
+app.use("/api/user", require("./src/routes/Authentication/user"))
+app.use("/api/auth/register", require("./src/routes/Authentication/register"))
+app.use("/api/auth/login", require("./src/routes/Authentication/login"))
+app.use("/api/auth/user", require("./src/routes/Authentication/users"))
+app.use("/api/auth/updateprofile", require("./src/routes/Authentication/updateProfile"))
+app.use("/api/auth/subjects", require("./src/routes/subjectsData/index"))
 
 // Forget Password 
 
-app.use("/api/auth", require("./src/routes/forgetPassword"))
+app.use("/api/auth", require("./src/routes/Authentication/forgetPassword"))
 // app.use("/api/profile", require("./src/routes/profileImg"))
 // app.use("/api/auth/otp", require("./src/routes/users"))
 // app.use("/api/auth/reset-password", require("./src/routes/users"))

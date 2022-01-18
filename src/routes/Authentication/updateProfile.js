@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router();
-const { authSchema } = require('../moduls/auth')
+const { authSchema } = require('../../moduls/auth')
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 
@@ -36,7 +36,7 @@ router.post("/", upload.single("profileImg"), (req, res) => {
             .exec()
             .then(async (user) => {
                 if (user.length < 1) {
-                    res.status(202).json({ massage: "User No Found" })
+                    res.status(202).json({ message: "User No Found" })
                 }
                 else {
                     const _id = user[0]._id.toString();
@@ -45,11 +45,11 @@ router.post("/", upload.single("profileImg"), (req, res) => {
                     const updateUser = await authSchema.findByIdAndUpdate(_id, req.body, {
                         new: true
                     })
-                    res.status(201).json(updateUser)
+                    res.status(201).send(updateUser)
                 }
             })
             .catch(e => {
-                res.status(202).json({ massage: "User Not Found" })
+                res.status(202).send({ message: "User Not Found" })
             })
     }
     catch (err) {
